@@ -1,0 +1,348 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}MIRA{% endblock %} — Medical Intelligence Robotic Automation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #1c2b2e;
+      --paper: #f6f4ee;
+      --panel: #ffffff;
+      --line: #d8d3c4;
+      --teal: #15534a;
+      --teal-soft: #e3ece9;
+      --clay: #b5563c;
+      --clay-soft: #f3e3dd;
+      --amber: #a8731f;
+      --amber-soft: #f2e8d4;
+      --muted: #6b7370;
+      --radius: 3px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 15px;
+      line-height: 1.5;
+    }
+
+    .topbar {
+      border-bottom: 1px solid var(--line);
+      background: var(--paper);
+      padding: 22px 32px 18px;
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+    }
+
+    .brand .mark {
+      font-family: 'Source Serif 4', serif;
+      font-weight: 600;
+      font-size: 26px;
+      letter-spacing: 0.02em;
+      color: var(--teal);
+    }
+
+    .brand .tagline {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    nav a {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--ink);
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      padding-bottom: 2px;
+    }
+    nav a:hover { border-bottom-color: var(--teal); }
+
+    main {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 36px 32px 80px;
+    }
+
+    .flash-stack { margin-bottom: 24px; }
+    .flash {
+      font-size: 13.5px;
+      padding: 10px 14px;
+      border-left: 3px solid var(--teal);
+      background: var(--teal-soft);
+      color: var(--teal);
+      margin-bottom: 8px;
+      border-radius: var(--radius);
+    }
+    .flash.info { border-left-color: var(--amber); background: var(--amber-soft); color: var(--amber); }
+
+    h1 {
+      font-family: 'Source Serif 4', serif;
+      font-weight: 600;
+      font-size: 28px;
+      margin: 0 0 4px;
+    }
+    .subhead {
+      color: var(--muted);
+      font-size: 13.5px;
+      margin: 0 0 28px;
+    }
+
+    a.button, button.button {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      text-decoration: none;
+      background: var(--teal);
+      color: #fff;
+      border: none;
+      padding: 10px 16px;
+      border-radius: var(--radius);
+      cursor: pointer;
+    }
+    a.button.secondary, button.button.secondary {
+      background: transparent;
+      color: var(--ink);
+      border: 1px solid var(--line);
+    }
+    a.button.danger, button.button.danger {
+      background: transparent;
+      color: var(--clay);
+      border: 1px solid var(--clay);
+    }
+    a.button:hover, button.button:hover { opacity: 0.88; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--panel);
+      border: 1px solid var(--line);
+    }
+    thead th {
+      text-align: left;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 500;
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--line);
+    }
+    tbody td {
+      padding: 13px 14px;
+      border-bottom: 1px solid var(--line);
+      font-size: 14px;
+      vertical-align: top;
+    }
+    tbody tr:last-child td { border-bottom: none; }
+    tbody tr:hover { background: #fbfaf6; }
+
+    .pill {
+      display: inline-block;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      padding: 3px 9px;
+      border-radius: 999px;
+    }
+    .pill.low { background: var(--teal-soft); color: var(--teal); }
+    .pill.moderate { background: var(--amber-soft); color: var(--amber); }
+    .pill.high { background: var(--clay-soft); color: var(--clay); }
+    .pill.unknown { background: #ece9e1; color: var(--muted); }
+
+    .remarks-cell { max-width: 280px; color: var(--ink); font-size: 13.5px; }
+
+    .actions { display: flex; gap: 14px; }
+    .actions form { display: inline; }
+    .actions a, .actions button {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11.5px;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      background: none;
+      border: none;
+      color: var(--teal);
+      text-decoration: none;
+      cursor: pointer;
+      padding: 0;
+    }
+    .actions .delete { color: var(--clay); }
+
+    .empty {
+      border: 1px dashed var(--line);
+      padding: 48px 24px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 13.5px;
+      background: var(--panel);
+    }
+
+    .toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+    .search input {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 13.5px;
+      padding: 9px 12px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--panel);
+      min-width: 220px;
+    }
+
+    form.record-form {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      padding: 28px;
+      max-width: 560px;
+    }
+    .field { margin-bottom: 18px; }
+    .field label {
+      display: block;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+    .field input {
+      width: 100%;
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 14.5px;
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+      color: var(--ink);
+    }
+    .field input:focus { outline: 2px solid var(--teal); outline-offset: 1px; }
+    .field .error {
+      color: var(--clay);
+      font-size: 12.5px;
+      margin-top: 5px;
+    }
+    .field input.has-error { border-color: var(--clay); }
+    .section-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--teal);
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 6px;
+      margin: 26px 0 16px;
+    }
+    .form-actions { display: flex; gap: 10px; margin-top: 24px; }
+
+    .detail-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--line);
+      border: 1px solid var(--line);
+      margin: 22px 0;
+    }
+    .detail-cell { background: var(--panel); padding: 18px; }
+    .detail-cell .k {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10.5px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+    .detail-cell .v {
+      font-family: 'Source Serif 4', serif;
+      font-size: 22px;
+    }
+
+    .remarks-panel {
+      border: 1px solid var(--line);
+      border-left: 4px solid var(--teal);
+      background: var(--panel);
+      padding: 20px 22px;
+      margin: 22px 0;
+    }
+    .remarks-panel .label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 8px;
+    }
+    .remarks-panel p { margin: 0; font-size: 14.5px; }
+
+    footer.disclaimer {
+      max-width: 980px;
+      margin: 0 auto 40px;
+      padding: 0 32px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="brand">
+      <span class="mark">MIRA</span>
+      <span class="tagline">Medical Intelligence Robotic Automation</span>
+    </div>
+    <nav>
+      <a href="{{ url_for('index') }}">Records</a>
+      &nbsp;&nbsp;
+      <a href="{{ url_for('create_patient') }}">New Patient</a>
+    </nav>
+  </div>
+
+  <main>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="flash-stack">
+          {% for category, message in messages %}
+            <div class="flash {{ category }}">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="disclaimer">
+    Remarks are generated by a rule-based clinical risk model for demonstration purposes only and are not a medical diagnosis.
+  </footer>
+</body>
+</html>

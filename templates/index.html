@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}Patient Records{% endblock %}
+{% block content %}
+  <h1>Patient Records</h1>
+  <p class="subhead">{{ patients|length }} record{{ 's' if patients|length != 1 else '' }} on file.</p>
+
+  <div class="toolbar">
+    <form class="search" method="get" action="{{ url_for('index') }}">
+      <input type="text" name="q" placeholder="Search by name…" value="{{ query }}">
+    </form>
+    <a class="button" href="{{ url_for('create_patient') }}">+ New Patient</a>
+  </div>
+
+  {% if patients %}
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Date of Birth</th>
+          <th>Glucose</th>
+          <th>HbA1c / Hb</th>
+          <th>Cholesterol</th>
+          <th>Risk</th>
+          <th>Remarks</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for p in patients %}
+        <tr>
+          <td><a href="{{ url_for('view_patient', patient_id=p.id) }}" style="color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--line);">{{ p.full_name }}</a></td>
+          <td>{{ p.date_of_birth.strftime('%d %b %Y') }}</td>
+          <td>{{ p.glucose }} mg/dL</td>
+          <td>{{ p.haemoglobin }} g/dL</td>
+          <td>{{ p.cholesterol }} mg/dL</td>
+          <td>
+            {% if p.risk_level %}
+              <span class="pill {{ p.risk_level|lower }}">{{ p.risk_level }}</span>
+            {% else %}
+              <span class="pill unknown">—</span>
+            {% endif %}
+          </td>
+          <td class="remarks-cell">{{ p.remarks or '—' }}</td>
+          <td>
+            <div class="actions">
+              <a href="{{ url_for('edit_patient', patient_id=p.id) }}">Edit</a>
+              <form action="{{ url_for('delete_patient', patient_id=p.id) }}" method="post" onsubmit="return confirm('Delete this record permanently?');">
+                <button type="submit" class="delete">Delete</button>
+              </form>
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <div class="empty">
+      No patient records yet. <a href="{{ url_for('create_patient') }}">Create the first one</a>.
+    </div>
+  {% endif %}
+{% endblock %}

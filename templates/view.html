@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}{{ patient.full_name }}{% endblock %}
+{% block content %}
+  <h1>{{ patient.full_name }}</h1>
+  <p class="subhead">
+    DOB {{ patient.date_of_birth.strftime('%d %b %Y') }} &middot; {{ patient.email }}
+  </p>
+
+  <div class="detail-grid">
+    <div class="detail-cell">
+      <div class="k">Glucose</div>
+      <div class="v">{{ patient.glucose }} <span style="font-size:13px;color:var(--muted);">mg/dL</span></div>
+    </div>
+    <div class="detail-cell">
+      <div class="k">Haemoglobin</div>
+      <div class="v">{{ patient.haemoglobin }} <span style="font-size:13px;color:var(--muted);">g/dL</span></div>
+    </div>
+    <div class="detail-cell">
+      <div class="k">Cholesterol</div>
+      <div class="v">{{ patient.cholesterol }} <span style="font-size:13px;color:var(--muted);">mg/dL</span></div>
+    </div>
+  </div>
+
+  <div class="remarks-panel">
+    <div class="label">
+      AI-Generated Remarks
+      {% if patient.risk_level %}
+        &nbsp;<span class="pill {{ patient.risk_level|lower }}">{{ patient.risk_level }} Risk</span>
+      {% endif %}
+    </div>
+    <p>{{ patient.remarks or 'No remarks available.' }}</p>
+  </div>
+
+  <div class="form-actions">
+    <a href="{{ url_for('edit_patient', patient_id=patient.id) }}" class="button">Edit Record</a>
+    <a href="{{ url_for('index') }}" class="button secondary">Back to Records</a>
+    <form action="{{ url_for('delete_patient', patient_id=patient.id) }}" method="post" onsubmit="return confirm('Delete this record permanently?');">
+      <button type="submit" class="button danger">Delete</button>
+    </form>
+  </div>
+{% endblock %}
