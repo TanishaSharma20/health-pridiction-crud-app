@@ -44,9 +44,4 @@ Visit `http://127.0.0.1:5000` in your browser.
 - `requirements.txt` — Python dependencies
 - `README.md` — project documentation
 
-## Notes
 
-- The SQLite database file is created automatically when the app first runs.
-- If the AI service is unavailable, the app still allows CRUD operations and
-  stores a fallback remark.
-- This is a demo application and not intended for real medical use.
