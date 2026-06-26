@@ -36,12 +36,6 @@ python app.py
 
 Visit `http://127.0.0.1:5000` in your browser.
 
-## Project structure
 
-- `app.py` — main Flask application and SQLite data model
-- `ai_service/predictor.py` — separate AI health service for risk assessment
-- `templates/` — Jinja2 HTML templates for listing, forms, and details
-- `requirements.txt` — Python dependencies
-- `README.md` — project documentation
 
 
